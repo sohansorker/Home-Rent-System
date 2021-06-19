@@ -1,6 +1,6 @@
 {% extends 'base.html' %} 
 
-
+{% load humanize %}
 
 {% block title %} | Welcome {% endblock %}
 
@@ -84,7 +84,7 @@
                 <img class="card-img-top" src="{{ flat.photo_main.url }}" alt="">
                 <div class="card-img-overlay">
                   <h2>
-                    <span class="badge badge-secondary text-white">৳{{ flat.price }}</span>
+                    <span class="badge badge-secondary text-white">৳{{ flat.price|intcomma }}</span>
                   </h2>
                 </div>
                 <div class="card-body">

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'index.apps.IndexConfig',
     'accounts.apps.AccountsConfig',
+    'dashboard.apps.DashboardConfig',
     'reservations.apps.ReservationsConfig',
     'houses.apps.HousesConfig',
     'flats.apps.FlatsConfig',

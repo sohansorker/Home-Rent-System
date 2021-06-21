@@ -1,4 +1,5 @@
 {% load static %}
+{% load app_tags %}
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
@@ -48,9 +49,15 @@
               class="nav-item mr-3"
             {% endif %}
             >
-              <a class="nav-link" href="{% url 'index' %}">
+            {% if request.user|has_group:"user" %}
+              <a class="nav-link" href="{% url 'userdash' %}">
                Welcome {{ user.username }} (Dashboard)</a>
             </li>
+            {% elif request.user|has_group:"Home_owner" %}
+            <a class="nav-link" href="{% url 'hodash' %}">
+              Welcome {{ user.username }} (Dashboard)</a>
+           </li>
+           {% endif %}
             <li class="nav-item mr-3">
               <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -68,7 +75,7 @@
               class="nav-item mr-3"
             {% endif %}
             >
-              <a class="nav-link" href="{% url 'index' %}">
+              <a class="nav-link" href="{% url 'register' %}">
                 <i class="fas fa-user-plus"></i> Register</a>
             </li>
             <li
@@ -78,7 +85,7 @@
               class="nav-item mr-3"
             {% endif %}
             >
-              <a class="nav-link" href="{% url 'index' %}">
+              <a class="nav-link" href="{% url 'login' %}">
                 <i class="fas fa-sign-in-alt"></i>
 
                 Login</a>

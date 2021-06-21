@@ -15,6 +15,15 @@
     <!-- Lightbox -->
     <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 
+    <style>
+      .m-progress-bar {
+          min-height: 1em;
+          background: #c12d2d;
+          width: 5%;
+      }
+      </style>
+
+
     <title>Home Rental System {% block title %} {% endblock %} </title>
 </head>
 <body>
@@ -32,5 +41,12 @@
   <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
   <script src="{% static 'js/lightbox.min.js' %} "></script>
   <script src="{% static 'js/main.js' %} "></script>
+  <script src="{% static 'js/multi-step-modal.js' %}"></script>
+  <script>
+  sendEvent = function(sel, step) {
+      var sel_event = new CustomEvent('next.m.' + step, {detail: {step: step}});
+      window.dispatchEvent(sel_event);
+  }
+  </script>
 </body>
 </html>

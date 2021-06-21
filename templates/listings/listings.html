@@ -47,9 +47,9 @@
                 </div>
                 <div class="card-body">
                   <div class="listing-heading text-center">
-                    <h4 class="text-primary">{{ flat.title }}</h4>
+                    <h4 class="text-primary">{{ flat.house.name }}</h4>
                     <p>
-                      <i class="fas fa-map-marker text-secondary"></i> {{ flat.city }} {{ flat.state }}, {{ flat.zipcode }}</p>
+                      <i class="fas fa-map-marker text-secondary"></i>  {{ flat.house.location }}, {{ flat.house.state }}, {{ flat.house.zipcode }}</p>
                   </div>
                   <hr>
                   <div class="row py-2 text-secondary">
@@ -67,21 +67,21 @@
                   <hr>
                   <div class="row py-2 text-secondary">
                     <div class="col-12">
-                      <i class="fas fa-user"></i> {{ flat.realtor }}</div>
+                      <i class="fas fa-user"></i> {{ flat.house.owner.username }}</div>
                   </div>
                   <div class="row text-secondary pb-2">
                     <div class="col-6">
-                      <i class="fas fa-clock"></i> {{ flat.list_date | timesince }}</div>
+                      <i class="fas fa-clock"></i> {{ flat.get_flat_type_display }}</div>
                   </div>
                   <hr>
-                  <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">More Info</a>
+                  <a href="{% url 'flat' flat.id %}" class="btn btn-primary btn-block">More Info</a>
                 </div>
               </div>
             </div>
           {% endfor %}
         {% else %}
           <div class="col-md-12">
-            <p>No Listings Available</p>
+            <p>No Flats Available</p>
           </div>
         {% endif %}
       </div>

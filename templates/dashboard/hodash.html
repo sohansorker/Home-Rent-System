@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+{%load app_tags%}
+{% block title %} | House Owner Dashboard {% endblock %}
+
+{% block content %}
+<section id="showcase-inner" class="py-5 text-white">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h1 class="display-4">Home Owner Dashboard</h1>
+          <h2>Welcome {{ user.first_name }}</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'index' %}">
+              <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active"> Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Alerts -->
+  {% include 'partials/_alerts.html' %}
+
+  <!--Staff section -->
+ 
+  
+  <section class="my-5">
+    
+    <h2 class="text-center text-primary">Property Status</h2>
+    <div class="container-fluid px-5 py-5 border">
+      <div class="row">
+        <div class="col-xl-3 col-lg-6 col-sm-12 mb-4">
+          <div class="bg-white rounded-lg p-5 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Houses</h2>
+  
+           <h4 class="h6 font-weight-bold text-center mb-4">{{houses_length}}</h4>
+            <!-- END -->
+          </div>
+        </div>
+  
+        <div class="col-xl-3 col-lg-6 col-sm-12 mb-4">
+          <div class="bg-white rounded-lg p-5 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Flats</h2>
+  
+            <h4 class="h6 font-weight-bold text-center mb-4">{{flats_length}}</h4>
+            <!-- END -->
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-6 col-sm-12 mb-4">
+          <div class="bg-white rounded-lg p-5 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Reserved</h2>
+            
+            <h4 class="h6 font-weight-bold text-center mb-4">{{reserved_length}}</h4>
+            <!-- END -->
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-6 col-sm-12 mb-4">
+          <div class="bg-white rounded-lg p-5 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">
+              Total Availables
+            </h2>
+            <h4 class="h6 font-weight-bold text-center mb-4">{{length_available_flats}}</h4>
+  
+            
+            <!-- END -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Room Stats section ends here-->
+  
+  <h2 class="text-center pb-2">Property Details</h2>
+  <button
+    class="btn-group btn-primary ml-3"
+    data-toggle="modal"
+    data-target="#newlocation"
+  >
+    Add New House
+  </button>
+  
+  <button
+    class="btn-group btn-primary"
+    data-toggle="modal"
+    data-target="#newroom"
+  >
+    Add New Flat
+  </button>
+  
+  
+  
+  <table class="table table-striped ml-3 mb-3">
+    <thead>
+      <th>Flat Number</th>
+      <th>House Name</th>
+      <th>Location</th>
+      <th>State</th>
+      <th>Type</th>
+      <th>Rent Status</th>
+      <th>Availability</th>
+      <th>Price</th>
+      <th>BedRooms</th>
+      <th>Size</th>
+      <th colspan="2">Actions</th>
+    </thead>
+    {% if flats %} 
+    {% for flat in flats %}
+    <tr>
+      <td>{{flat.flatnumber}}</td>
+      <td>{{flat.house.name}}</td>
+      <td>{{flat.house.location}}</td>
+      <td>{{flat.house.state}}</td>
+      <td>{{flat.get_flat_type_display}}</td>
+      <td>{{flat.rent_status}}</td>
+      <td>{{flat.get_status_display}}</td>
+      <td>{{flat.price}}</td>
+      <td>{{flat.bedrooms}}</td>
+      <td>{{flat.sqft}} sqft</td>
+      <td colspan="2">
+        <a href="/staff/panel/edit-room?roomid={{each_room.id}}"
+          ><button class="btn btn-danger">Edit</button></a>
+
+        <a href="{% url 'flat' flat.id %}"> 
+          <button class="btn btn-primary">View</button></a>
+      </td>
+    </tr>
+    {% endfor %} 
+    {% endif %}
+  </table>
+  <!---->
+  
+  <!--Modal for Add New Location starts from here-->
+  
+  <!-- The Modal  add new house-->
+  <div class="modal fade" id="newlocation" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add New House</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col mx-auto">
+                <form action="{% url 'addhouse' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+  
+                  <div class="form-group">
+                    <label for="homename">Home Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="new_owner"
+                      name="homename"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="location"
+                      name="location"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="state">State:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="state"
+                      name="state"
+                      required
+                    />
+
+                  </div>
+                  <div class="form-group">
+                    <label for="zipcode">Zipcode:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="zipcode"
+                      name="zipcode"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="country">Country:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="country"
+                      name="country"
+                      required
+                    />
+                  </div>
+  
+                  <div class="form-group">
+                    <label for="homeimage"> Home Image: </label>
+                    <input type="file" class="form-control " id="homeimage" placeholder="Home Image" name="homeimage" required>
+                </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal for Add New location Ends here-->
+  
+  <!--Modal for Add New Flat starts from here-->
+  
+  <!-- The Modal -->
+  <div class="modal fade" id="newroom">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add New Flat</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col mx-auto">
+                <form action="{% url 'addflats' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="house">House:</label>
+                    <select class="form-control" name="house" id="house" required>
+                      {% for house in houses%}
+                      <option value="{{house.id}}">{{house.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+  
+                  <div class="form-group">
+                    <label for="flattype">Flat Type:</label>
+                    <select class="form-control" name="flattype" id="flattype" required>
+                      <option value="1">Premium</option>
+                      <option value="2">Deluxe</option>
+                      <option value="3">Basic</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="flatnumber">Flat Number:</label>
+                    <input
+                      type="mumber"
+                      class="form-control"
+                      id="flatnumber"
+                      name="flatnumber"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="size">Size:</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="size"
+                      placeholder="In square feet"
+                      name="size"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="bedrooms">Bedrooms:</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="bedrooms"
+                      placeholder="Enter Numbers Only"
+                      name="bedrooms"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="bathrooms">Bathrooms:</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="bathrooms"
+                      placeholder="Enter Numbers Only"
+                      name="bathrooms"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="garages">Garages:</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="garages"
+                      placeholder="Enter Numbers Only"
+                      name="garages"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="discription">Description:</label>
+                    <textarea
+                     
+                      class="form-control"
+                      id="discription"
+                      placeholder="Enter Description Here...."
+                      name="discription" required></textarea>
+                    
+                  </div>
+                  <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter Numbers Only" required/>
+                  </div>
+                  <div class="form-group">
+                    <label for="mainimage"> Flat Image Main: </label>
+                    <input type="file" class="form-control " id="mainimage" placeholder="mainimage" name="mainimage" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="image"> Flat Image 01: </label>
+                    <input type="file" class="form-control " id="image01" placeholder="image01" name="image01" >
+                  </div>
+                  <div class="form-group">
+                    <label for="image"> Flat Image 02: </label>
+                    <input type="file" class="form-control " id="image02" placeholder="image02" name="image02" >
+                  </div>
+                  <div class="form-group">
+                    <label for="image"> Flat Image 03: </label>
+                    <input type="file" class="form-control " id="image03" placeholder="image03" name="image03" >
+                  </div>
+                  <div class="form-group">
+                    <label for="image"> Flat Image 04: </label>
+                    <input type="file" class="form-control " id="image04" placeholder="image04" name="image04" >
+                  </div>
+                  <div class="form-group">
+                    <label for="image"> Flat Image 05: </label>
+                    <input type="file" class="form-control " id="image05" placeholder="image05" name="image05" >
+                  </div>
+                  <div class="form-group">
+                    <label for="image"> Flat Image 06: </label>
+                    <input type="file" class="form-control " id="image06" placeholder="image06" name="image06" >
+                  </div>
+                  <div class="form-group">
+                    <label for="availability">Availability:</label>
+                    <select class="form-control" name="availability" id="availability">
+                      <option value="1">Available</option>
+                      <option value="2">Not Available</option>
+                    </select>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal for Add New Room Ends here-->
+
+  {% endblock %}

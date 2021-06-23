@@ -173,7 +173,6 @@
       <div class="modal-header">
         <!-- Steps Header with progress bar -->
         <h5 class="modal-title step-1" id="inquiryModalLabel" data-step="1">Step 1: Select Months</h5>
-        <h5 class="modal-title step-2" id="inquiryModalLabel" data-step="2">Step 2: Make The Payment</h5>
         <h5 class="modal-title step-3" id="inquiryModalLabel" data-step="3">Final Step: Police Verification Form</h5>
         <button type="button" class="close" data-dismiss="modal">
           <span>&times;</span>
@@ -200,7 +199,8 @@
           </div>
           <div class="form-group">
             <label for="Price" class="col-form-label">Price Per Month:</label>
-            <input type="text" name="pricepermonth" class="form-control" value="{{flat.price}} Taka" disabled>
+            <input type="text" class="form-control" value="{{flat.price}} Taka" disabled>
+            <input type="hidden" name="pricepermonth" class="form-control" value="{{flat.price}}">
           </div>
           <div class="form-group">
             <label for="check_in_month" class="col-form-label">Check In Month:</label>
@@ -214,7 +214,7 @@
         </div>
 
 
-        <div class="modal-body step-2" data-step="2">
+        <!-- <div class="modal-body step-2" data-step="2">
           <div class="form-group">
             <label for="Price" class="col-form-label">Price Per Month:</label>
             <input type="text" name="pricepermonth" class="form-control" value="{{flat.price}} Taka" disabled>
@@ -235,7 +235,7 @@
             <label for="sendamount" class="col-form-label">How Much Sent:</label>
             <input type="text" name="sendamount" class="form-control" required>
           </div>
-        </div>
+        </div> -->
 
 
         <div class="modal-body step-3" data-step="3">
@@ -253,7 +253,7 @@
           </div>
           <div class="form-group">
             <label for="nid" class="col-form-label">NID Number:</label>
-            <input type="text" name="nid" class="form-control" required>
+            <input type="number" min="100000" max="99999999999999999" name="nid" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="maritalstatus" class="col-form-label">Marital Status:</label>
@@ -269,15 +269,20 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-warning step step-2" data-step="2"
-            onclick="sendEvent('#demo-modal-3', 1)">Back</button>
+
+          <!-- <button type="button" class="btn btn-warning step step-2" data-step="2"
+            onclick="sendEvent('#demo-modal-3', 1)">Back</button> -->
+
           <button type="button" class="btn btn-primary step step-1" data-step="1"
-            onclick="sendEvent('#demo-modal-3', 2)">Next</button>
-          <button type="button" class="btn btn-warning step step-3" data-step="3"
-            onclick="sendEvent('#demo-modal-3', 2)">Back</button>
-          <button type="submit" class="btn btn-success step step-3" data-step="3">Submit</button>
-          <button type="button" class="btn btn-primary step step-2" data-step="2"
             onclick="sendEvent('#demo-modal-3', 3)">Next</button>
+
+          <button type="button" class="btn btn-warning step step-3" data-step="3"
+            onclick="sendEvent('#demo-modal-3', 1)">Back</button>
+
+          <button type="submit" class="btn btn-success step step-3" data-step="3">Submit</button>
+          
+          <!-- <button type="button" class="btn btn-primary step step-2" data-step="2"
+            onclick="sendEvent('#demo-modal-3', 3)">Next</button> -->
         </div>
       </form>
     </div>

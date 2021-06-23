@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 @user_passes_test(lambda u: u.groups.filter(name='user').exists())
 def userdash(request):
     user = request.user.id
-    reservation = Reservation.objects.filter(guest_id = user)
+    reservation = Reservation.objects.order_by('-id').filter(guest_id = user)
     context = {
         'reservation':reservation,
     }
@@ -29,7 +29,7 @@ def hodash(request):
     for house in houses:
         flats = Flat.objects.filter(house=house)
         for flat in flats:
-            reserved = Reservation.objects.filter(flat=flat)
+            reserved = Reservation.objects.order_by('-id').filter(flat=flat)
             total_reserved += reserved
         totall_flats += flats           
     flats_length = len(totall_flats)

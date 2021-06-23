@@ -6,26 +6,27 @@ from .models import CustomUser
 
 # Create your views here.
 def login(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+    try:
+        if request.method != 'POST':
+            return render(request, 'accounts/login.html')
+        else:
+            #  collect User information
+            loginusername = request.POST['username']
+            loginpassword = request.POST['password']
 
-        user = auth.authenticate(username=username, password=password)
-        try:
-            if user.groups.filter(name='Home_owner').exists() or user.groups.filter(name='user').exists():
-                if user is not None:
-                    auth.login(request,user)
-                    messages.success(request, 'You are now logged in')
-                    return redirect('index')
+            # validating user information
+            user = auth.authenticate(username=loginusername, password=loginpassword)
+
+            # saving user information
+            if user is not None:
+                auth.login(request, user)
+                messages.success(request, "You have successfully logged in")
+                return redirect('dashboard')
             else:
-                messages.error(request,"Incorrect username or Password")
-                return redirect('login')
-        except:
-            pass 
-    else:
-        return render(request, 'accounts/login.html')
+                messages.error(request, "Username or Password is not matched. Please try again !")
+                return redirect(request.META['HTTP_REFERER'])
+    except:
+        return redirect('index')
 
 
 def register(request):

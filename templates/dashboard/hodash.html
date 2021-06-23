@@ -124,7 +124,11 @@
       <td>{{flat.house.location}}</td>
       <td>{{flat.house.state}}</td>
       <td>{{flat.get_flat_type_display}}</td>
-      <td>{{flat.rent_status}}</td>
+      {% if flat.rent_status %}
+      <td>Not Rented</td>
+      {% else %}
+      <td>Rented</td>
+      {% endif %}
       <td>{{flat.get_status_display}}</td>
       <td>{{flat.price}}</td>
       <td>{{flat.bedrooms}}</td>
@@ -290,6 +294,7 @@
                       class="form-control"
                       id="size"
                       placeholder="In square feet"
+                      min="1"
                       name="size"
                       required
                     />
@@ -301,6 +306,7 @@
                       class="form-control"
                       id="bedrooms"
                       placeholder="Enter Numbers Only"
+                      min="1"
                       name="bedrooms"
                       required
                     />
@@ -312,6 +318,7 @@
                       class="form-control"
                       id="bathrooms"
                       placeholder="Enter Numbers Only"
+                      min="1"
                       name="bathrooms"
                       required
                     />
@@ -323,6 +330,7 @@
                       class="form-control"
                       id="garages"
                       placeholder="Enter Numbers Only"
+                      min="0"
                       name="garages"
                       required
                     />
@@ -339,7 +347,7 @@
                   </div>
                   <div class="form-group">
                     <label for="price">Price:</label>
-                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter Numbers Only" required/>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter Numbers Only" min="1" required/>
                   </div>
                   <div class="form-group">
                     <label for="mainimage"> Flat Image Main: </label>

@@ -6,6 +6,5 @@ urlpatterns =[
     path('', views.index, name='flats'),
     path('<int:flat_id>', views.flats, name='flat'),
     path('addflats/', views.addflats, name='addflats'),
-    path('search/', views.search, name='search'),
 ]
 

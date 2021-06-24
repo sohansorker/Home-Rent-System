@@ -54,7 +54,7 @@ def makepayment(request):
         reservation = Reservation.objects.filter(id=reservationid)
         bkash_number = request.POST['bkash_number']
         trx = request.POST['trx']
-        reservation.update(payment_number=bkash_number, trxid=trx)
+        reservation.update(payment_number=bkash_number, trxid=trx, paymentStatus='1')
         messages.success(request,"Your payment has been added successfully")
         return redirect('userdash')
     else:

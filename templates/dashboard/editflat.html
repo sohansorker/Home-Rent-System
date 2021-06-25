@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Edit Flat
+{% endblock title %}
+{% block content %}
+
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'hodash' %}">
+              <i class="fas fa-home"></i> Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active"> Edit Flat</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Alerts -->
+  {% include 'partials/_alerts.html' %}
+
+
+<h1 class="text-center bg-warning my-0">Edit Flat</h1>
+    <!--Staff section -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-xlg-6 col-sm-12 mx-auto">
+                <form action="{% url 'editflats' %}" method="POST" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label for="housename">House Name:</label>
+                        <input type="text" class="form-control" id="housename" name="housename" value="{{flat.house.name}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="flatnumber">Flat Number:</label>
+                        <input type="text" class="form-control" id="flatnumber" name="flatnumber" value="{{flat.flatnumber}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Status:</label>
+                        <select class="form-control" name="status" id="status">
+                            <option value="1">Available</option>
+                            <option value="2">Not Available</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Flat Type:</label>
+                        <select class="form-control" name="flattype" id="flattype">
+                            <option  value='1'>Premium</option>
+                            <option  value='2'>Deluxe</option>
+                            <option  value='3'>Basic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bedrooms">Bedroom:</label>
+                        <input type="number" class="form-control " id="bedrooms" name="bedrooms" value="{{flat.bedrooms}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="bathrooms">Bathrooms:</label>
+                        <input type="number" class="form-control " id="bathrooms" name="bathrooms" value="{{flat.bathrooms}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="garage">Garage:</label>
+                        <input type="number" class="form-control " id="garage" name="garage" value="{{flat.garage}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Price:</label>
+                        <input type="mumber" class="form-control " id="price" name="price" value="{{flat.price}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Size:</label>
+                        <input type="number" class="form-control " id="size" name="size" value="{{flat.sqft}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control " id="description" name="description" >{{flat.description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Location:</label>
+                        <input type="text" class="form-control " id="hotel" name="hotel" value="{{flat.house.location}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Flat Image:</label>
+                        <input type="file" class="form-control " id="image" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-success mb-3">Save</button>
+                    <input type="hidden" name="flatid" value="{{flat.id}}">
+                    <input type="hidden" class="form-control " id="houseid" name="houseid" value="{{flat.house.id}}">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+    

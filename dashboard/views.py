@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from reservations.models import Reservation
 from houses.models import House
 from flats.models import Flat
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -19,6 +20,20 @@ def userdash(request):
         'reservation':reservation,
     }
     return render(request, 'dashboard/userdash.html', context)
+
+
+
+@login_required()
+@user_passes_test(lambda u: u.groups.filter(name='user').exists() or u.groups.filter(name='Home_owner').exists())
+def cancelorder(request):
+    if request.method == 'POST':
+        id = request.POST['reservationid']
+        order = Reservation.objects.get(id=id)
+        flat = Flat.objects.filter(id=order.flat_id)
+        flat.update(rent_status=True)
+        Reservation.objects.filter(id=id).delete()
+        messages.success(request,"Reservation Canceled Successfully")
+        return redirect(request.META['HTTP_REFERER'])
 
 
 
@@ -49,6 +64,81 @@ def hodash(request):
 
     }
     return render(request, 'dashboard/hodash.html', context)
+
+
+@login_required()
+@user_passes_test(lambda u: u.groups.filter(name='Home_owner').exists())
+def changestatus(request):
+    if request.method == 'POST':
+        reservation = Reservation.objects.filter(id = request.POST['reservationid'])
+        if 'policeStatus' in request.POST:
+            reservation.update(policeStatus = request.POST['policeStatus'])
+        if 'paymentStatus' in request.POST:
+            reservation.update(paymentStatus = request.POST['paymentStatus'])
+        if 'status' in request.POST:
+            reservation.update(status = request.POST['status'])
+
+        messages.success(request,"Status Updated Successfully")
+        return redirect(request.META['HTTP_REFERER']) 
+
+
+
+@login_required()
+@user_passes_test(lambda u: u.groups.filter(name='Home_owner').exists())
+def vieworder(request, flat_id):
+    reservation = Reservation.objects.filter(flat_id=flat_id).first()
+    if reservation:
+        context = {
+            'reservation' : reservation,
+        }
+        return render(request,'dashboard/vieworder.html', context)
+    else:
+        messages.success(request,"It's Not Booked Yet")
+        return redirect(request.META['HTTP_REFERER'])
+
+
+
+@login_required()
+@user_passes_test(lambda u: u.groups.filter(name='Home_owner').exists())
+def editflat(request, flat_id):
+    flat = get_object_or_404(Flat, pk=flat_id)
+    context = {
+    'flat': flat,
+    }
+    return render(request, 'dashboard/editflat.html', context)
+
+
+
+@login_required()
+@user_passes_test(lambda u: u.groups.filter(name='Home_owner').exists())
+def editflats(request):
+    if request.method == 'POST':
+        flat = Flat.objects.filter(id = request.POST['flatid'])
+        if 'flatnumber' in request.POST:
+            flat.update(flatnumber = request.POST['flatnumber'])
+        if 'flattype' in request.POST:
+            flat.update(flat_type = request.POST['flattype'])
+        if 'price' in request.POST:
+            flat.update(price = request.POST['price'])
+        if 'status' in request.POST:
+            flat.update(status = request.POST['status'])
+        if 'bedrooms' in request.POST:
+            flat.update(bedrooms = request.POST['bedrooms'])
+        if 'bathrooms' in request.POST:
+            flat.update(bathrooms = request.POST['bathrooms'])
+        if 'garage' in request.POST:
+            flat.update(garage = request.POST['garage'])
+        if 'size' in request.POST:
+            flat.update(sqft = request.POST['size'])
+        if 'description' in request.POST:
+            flat.update(description = request.POST['description'])
+        if 'image' in request.FILES:
+            flat.update(photo_main = request.POST['image'])
+        
+        messages.success(request,"Status Updated Successfully")
+        return redirect(request.META['HTTP_REFERER'])
+
+
 
 
 @login_required()

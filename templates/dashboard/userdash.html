@@ -81,6 +81,13 @@
               <button type="submit" class="btn btn-warning">Make Payment</button>
             </td>
           </form>
+          <form action="{% url 'cancelorder' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="reservationid" value="{{ contact.id }}">
+            <td>
+              <button type="submit" class="btn btn-danger">Cancel</button>
+            </td>
+          </form>
           
           <td>
             <a class="btn btn-dark" href="{% url 'flat' contact.flat_id %}">View</a>

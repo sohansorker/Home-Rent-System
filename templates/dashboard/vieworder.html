@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}View Order
+{% endblock title %}
+{% block content %}
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'hodash' %}">
+            <i class="fas fa-home"></i> Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">View Order</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Alerts -->
+{% include 'partials/_alerts.html' %}
+
+
+
+<hr> 
+<h3 class="text-success" style="text-align: center;">Booking Details</h3>
+<table class="table table-striped ml-3 mb-3">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Property</th>
+      <th scope="col">Check In</th>
+      <th scope="col">Check Out</th>
+      <th scope="col">Status</th>
+      <th scope="col">Change Status</th>
+      <th scope="col">Invoice</th>
+      <th scope="col">Payment Status</th>
+      <th scope="col">Change Payment Status</th>
+      <th scope="col">Police Verification Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <form action="{% url 'changestatus' %}" method="POST">
+        {% csrf_token %}
+      <td>{{ reservation.id }}</td>
+      <td>{{ reservation.flat.flatnumber}}</td>
+      <td>{{ reservation.check_in}}</td>
+      <td>{{ reservation.check_out}}</td>
+      <td>{{ reservation.get_status_display}}</td>
+      <td>
+        <div class="form-group">
+          <select class="form-control" name="status" id="roomtype">
+            <option value="1">Pending</option>
+            <option value="2">Approve</option>
+            <option value="3">Cancel</option>
+          </select>
+        </div>
+      </td>
+      <td>{{ reservation.amount}}</td>
+      <td>{{ reservation.get_paymentStatus_display}}</td>
+      <td>
+        <div class="form-group">
+          <select class="form-control" name="paymentStatus" id="roomtype">
+            <option value="1">Pending</option>
+            <option value="2">Paid</option>
+            <option value="3">Due</option>
+            <option value="4">Cancel</option>
+          </select>
+        </div>
+      </td>
+      <td>{{ reservation.get_policeStatus_display}}</td>
+        <td>
+          <div class="form-group">
+            <select class="form-control" name="policeStatus" id="roomtype">
+              <option value="1">Pending</option>
+              <option value="2">Approve</option>
+              <option value="3">Cancel</option>
+            </select>
+          </div>
+        </td>
+        <td>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <input type="hidden" name="reservationid" value="{{reservation.id}}">
+        </td>
+      </form>
+      
+    </tr>
+</table>
+{% endblock content %}
